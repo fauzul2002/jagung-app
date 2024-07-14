@@ -2,8 +2,13 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\JagungController;
+use App\Http\Controllers\KecamatanController;
+use App\Http\Controllers\PrediksiController;
+use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\UserController;
+use Illuminate\Support\Facades\Route;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -16,7 +21,7 @@ use App\Http\Controllers\UserController;
 */
 
 Route::get('/', function () {
-    return view('dashboard');
+    return view('landing');
 });
 
 Route::controller(AuthController::class)->group(function () {
@@ -25,10 +30,18 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('/logout', 'logout');
 });
 
+Route::controller(RegisterController::class)->group(function () {
+    Route::get('/register', 'index')->name('register')->middleware('guest');
+    Route::post('/register', 'store');
+});
+
+
+
 Route::prefix('/dashboard')->middleware('auth')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
     Route::resource('/user', UserController::class);
     Route::resource('/kecamatan', KecamatanController::class);
     Route::resource('/produksi', JagungController::class);
+    Route::resource('/prediksi', PrediksiController::class);
     Route::put('/resetpassword/{user}', [UserController::class, 'resetPasswordAdmin'])->name('resetpassword.resetPasswordAdmin');
 });

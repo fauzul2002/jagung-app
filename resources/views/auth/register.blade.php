@@ -20,7 +20,7 @@
 
     <!-- Theme CSS -->
     <link rel="stylesheet" href="{{ asset('css/theme.css') }}">
-    <title>Sign In | Predict Jagung</title>
+    <title>Register | Predict Jagung</title>
 </head>
 
 <body class="bg-light">
@@ -61,9 +61,20 @@
                             <p class="mb-5">Please enter your user information.</p>
                         </div>
                         <!-- Form -->
-                        <form action="/login" method="post">
+                        <form action="/register" method="post">
                             @csrf
                             <!-- Username -->
+                            <div class="mb-3">
+                                <label for="name" class="form-label">Name</label>
+                                <input class="form-control @error('name') is-invalid @enderror" name="name"
+                                    id="name" placeholder="Enter your name" value="{{ old('name') }}" required
+                                    autofocus>
+                                @error('name')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
                             <div class="mb-3">
                                 <label for="username" class="form-label">Username</label>
                                 <input class="form-control @error('username') is-invalid @enderror" name="username"
@@ -87,12 +98,12 @@
                                     <input type="checkbox" class="form-check-input" id="showpsd">
                                     <label class="form-check-label" for="showpsd">Show Password</label>
                                 </div>
-                                <a href="/register">Register</a>
+                                <a href="/login">Sign In</a>
                             </div>
                             <div>
                                 <!-- Button -->
                                 <div class="d-grid">
-                                    <button type="submit" class="btn btn-primary">Sign in</button>
+                                    <button type="submit" class="btn btn-primary">Register</button>
                                 </div>
                         </form>
                     </div>

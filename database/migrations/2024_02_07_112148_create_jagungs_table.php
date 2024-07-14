@@ -13,6 +13,12 @@ return new class extends Migration
     {
         Schema::create('jagungs', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('kecamatan')->constrained('kecamatans')->onUpdate('cascade')->onDelete('restrict');
+            $table->double('areaLahan');
+            $table->double('areaPanen');
+            $table->year('priode');
+            $table->double('totalProduktivitas');
+            $table->double('totalProduksi');
             $table->timestamps();
         });
     }
