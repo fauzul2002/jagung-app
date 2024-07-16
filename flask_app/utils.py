@@ -18,8 +18,13 @@ def mean_squared_error(actual, forecast):
         raise ValueError("Actual data and forecast data have different lengths")
     return sum((a - f) ** 2 for a, f in zip(actual, forecast)) / len(actual)
 
-
-def average_forecasting_error_rate(actual, forecast):
+def mean_absolute_percentage_error(actual, forecast):
     if len(actual) != len(forecast):
         raise ValueError("Actual data and forecast data have different lengths")
-    return sum(abs(a - f) / a for a, f in zip(actual, forecast)) / len(actual)
+    return sum(abs((a - f) / a) for a, f in zip(actual, forecast)) / len(actual) * 100
+
+
+# def average_forecasting_error_rate(actual, forecast):
+#     if len(actual) != len(forecast):
+#         raise ValueError("Actual data and forecast data have different lengths")
+#     return sum(abs(a - f) / a for a, f in zip(actual, forecast)) / len(actual)

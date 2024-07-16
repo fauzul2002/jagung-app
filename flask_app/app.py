@@ -1,7 +1,7 @@
 from flask import Flask, jsonify
 from flask_cors import CORS
 from fts import FTS
-from utils import mean_squared_error, average_forecasting_error_rate
+from utils import mean_squared_error, mean_absolute_percentage_error
 import requests
 import pandas as pd
 
@@ -61,10 +61,13 @@ def predict():
     )
     engine.train()
     singleResult = engine.test()
-    forecasted = [v["predicted"] for v in singleResult[:-1]]
-    actual = [v["value"] for v in singleResult[1:]]
+    forecasted = [v["predicted"] for v in singleResult]
+    actual = [v["value"] for v in singleResult]
     mse = mean_squared_error(actual, forecasted)
-    afer = average_forecasting_error_rate(actual, forecasted)
+    print(actual)
+    print(forecasted)
+    mape = mean_absolute_percentage_error(actual, forecasted)
+    # afer = average_forecasting_error_rate(actual, forecasted)//
     # print(singleResult)
     # print({"mse": mse, "afer": afer})
 
@@ -72,7 +75,7 @@ def predict():
     latest_value = latest_data["value"]
 
     forecasted_values = []
-    for i in range(1, 6):
+    for i in range(1, 2):
         # Lakukan prediksi dengan menggunakan pola historis dari data terakhir
         forecasted_value = latest_value + (latest_value - dataset[-2]["value"])
         forecasted_values.append(forecasted_value)
@@ -84,9 +87,9 @@ def predict():
         prediction_results.append({"Tahun": f"Tahun {2022 + i}", "Prediksi": value})
 
     # Data metrik evaluasi
-    evaluation_metrics = {"mse": mse, "afer": afer}
+    evaluation_metrics = {"mse": mse }
     mse_percentage = mse * 100
-    afer_percentage = "{:.2f}".format(afer) * 100
+    # afer_percentage = "{:.2f}".format(afer) * 100
 
     # Mengembalikan response JSON
     response_data = {
@@ -94,7 +97,7 @@ def predict():
         "prediction_results": prediction_results[-5:],
         "evaluation_metrics": {
             "mse": mse,
-            "afer": afer_percentage,
+            "mape": mape,
         },
     }
 
