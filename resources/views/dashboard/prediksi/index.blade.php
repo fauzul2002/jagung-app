@@ -49,7 +49,7 @@
             </div>
         </div>
     </div>
-    <h4>Grafik</h4>
+    <h4>Grafik Predict</h4>
     <div class="row">
         <div class="col">
             <div class="card">
@@ -79,30 +79,32 @@
             if (data) {
                 const hasilPrediksi = data.data_train;
                 const hasilPrediksi2 = data.prediction_results;
+                const actual = data.data_train; // Data aktual
                 let tbody = '';
+
                 // Iterasi melalui objek data dan buat baris HTML untuk setiap entri
                 hasilPrediksi.forEach((item, index) => {
                     tbody += `
-                    <tr>
-                        <td>${index + 1}</td>
-                        <td>${item.key}</td>
-                        <td>${item.predicted}</td>
-                        <td>${item.value}</td>
-                    </tr>`;
+        <tr>
+            <td>${index + 1}</td>
+            <td>${item.key}</td>
+            <td>${item.predicted}</td>
+            <td>${item.value}</td>
+        </tr>`;
                 });
                 $('#tbody').html(tbody);
                 hasilPrediksi2.forEach((item, index) => {
                     tbody += `
-                    <tr>
-                        <td>${index + 18}</td>
-                        <td>${item.Tahun}</td>
-                        <td>${item.Prediksi}</td>
-                        <td>null</td>
-                    </tr>`;
+        <tr>
+            <td>${index + 18}</td>
+            <td>${item.Tahun}</td>
+            <td>${item.Prediksi}</td>
+            <td>null</td>
+        </tr>`;
                 });
                 $('#tbody').html(tbody);
 
-                const mape = data.evaluation_metrics.mape ;
+                const mape = data.evaluation_metrics.afer;
                 const mapeAsNumber = parseFloat(mape);
 
                 // Mengambil empat angka setelah titik desimal
@@ -118,13 +120,20 @@
                     data: {
                         labels: hasilPrediksi.map(item => item.key),
                         datasets: [{
-                            label: 'Produksi',
-                            borderColor: "#8f44fd",
-                            backgroundColor: "#8f44fd",
-                            data: hasilPrediksi.map(item => item.predicted),
-                            fill: true,
-                            borderWidth: 1
-                        }]
+                                label: 'Prediksi',
+                                borderColor: "#8f44fd",
+                                backgroundColor: "#8f44fd",
+                                data: hasilPrediksi.map(item => item.predicted),
+                                borderWidth: 1
+                            },
+                            {
+                                label: 'Actual',
+                                borderColor: "#44a8fd",
+                                backgroundColor: "#44a8fd",
+                                data: actual.map(item => item.value),
+                                borderWidth: 1
+                            }
+                        ]
                     },
                     options: {
                         scales: {
@@ -156,11 +165,8 @@
                         },
                     }
                 });
-            } else {
-                console.log('Failed to retrieve product data');
             }
-
-        });
+        })
     </script>
 @endsection
 @endsection
