@@ -110,7 +110,7 @@ class FTS:
 
                 for rule in partition_rules:
                     consequent_value = self._partition_ref[rule[0]].median
-                    weight = (rule[1] + rule[2]) / 2
+                    weight = (int(rule[1]) + int(rule[2])) / 2
                     weighted_sum += consequent_value * weight
                     total_weight += weight
 
@@ -128,7 +128,7 @@ class FTS:
                 predicted_value,
             )
             print("luas panen =", luas_panen, "luas tanam =", luas_tanam)
-            total_variable = (luas_tanam + luas_panen) / 2
+            total_variable = (int(luas_tanam) + int(luas_panen)) / 2
             predicted_value += total_variable
             print(
                 "total variable",
