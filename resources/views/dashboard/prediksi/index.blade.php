@@ -115,23 +115,43 @@
 
                 const ctx = document.getElementById('myChart');
 
+                const combinedPrediksi = hasilPrediksi.concat(hasilPrediksi2.map(item => ({
+                    key: item.Tahun.replace('Tahun ', ''), // Menyederhanakan format tahun
+                    predicted: item.Prediksi,
+                    value: null // Atur nilai default untuk tahun-tahun masa depan
+                })));
+
+                // Tambahkan nilai aktual ke data prediksi
+                const combinedData = combinedPrediksi.map(item => ({
+                    key: item.key,
+                    predicted: item.predicted,
+                    value: actual.find(actualItem => actualItem.key === item.key)?.value ||
+                        0 // Ganti nilai kosong dengan 0
+                }));
+
+                console.log(combinedPrediksi);
+                // Ambil label dan data untuk semua dataset
+                const labels = combinedData.map(item => item.key); // Label untuk sumbu X
+                const prediksiData = combinedData.map(item => item.predicted); // Data prediksi
+                const actualData = combinedData.map(item => item.value); // Data aktual
+
                 new Chart(ctx, {
                     type: 'line',
                     data: {
-                        labels: hasilPrediksi.map(item => item.key),
+                        labels: labels,
                         datasets: [{
                                 label: 'Prediksi',
                                 borderColor: "#8f44fd",
-                                backgroundColor: "#8f44fd",
-                                data: hasilPrediksi.map(item => item.predicted),
-                                borderWidth: 1
+                                backgroundColor: "rgba(143, 68, 77, 0.2)",
+                                data: prediksiData,
+                                borderWidth: 2,
                             },
                             {
                                 label: 'Actual',
                                 borderColor: "#44a8fd",
-                                backgroundColor: "#44a8fd",
-                                data: actual.map(item => item.value),
-                                borderWidth: 1
+                                backgroundColor: "rgba(68, 168, 253, 0.2)",
+                                data: actualData,
+                                borderWidth: 2,
                             }
                         ]
                     },
