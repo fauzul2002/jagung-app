@@ -104,7 +104,7 @@
                 });
                 $('#tbody').html(tbody);
 
-                const mape = data.evaluation_metrics.afer;
+                const mape = data.evaluation_metrics.mape;
                 const mapeAsNumber = parseFloat(mape);
 
                 // Mengambil empat angka setelah titik desimal

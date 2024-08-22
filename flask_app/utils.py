@@ -1,5 +1,6 @@
 import math
 
+
 def base_lookup(interval):
     return 0.1 if interval <= 0.1 else 10 ** math.ceil(math.log10(interval) - 1)
 
@@ -23,3 +24,9 @@ def average_forecasting_error_rate(actual, forecast):
     if len(actual) != len(forecast):
         raise ValueError("Actual data and forecast data have different lengths")
     return sum(abs(a - f) / a for a, f in zip(actual, forecast)) / len(actual)
+
+
+def mean_absolute_percentage_error(actual, forecast):
+    if len(actual) != len(forecast):
+        raise ValueError("Actual data and forecast data have different lengths")
+    return sum(abs((a - f) / a) for a, f in zip(actual, forecast)) / len(actual) * 100

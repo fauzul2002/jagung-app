@@ -1,7 +1,7 @@
 from flask import Flask, jsonify
 from flask_cors import CORS
 from fts import FTS
-from utils import mean_squared_error, average_forecasting_error_rate
+from utils import mean_squared_error, average_forecasting_error_rate, mean_absolute_percentage_error
 import requests
 import pandas as pd
 
@@ -87,6 +87,7 @@ def predict():
     evaluation_metrics = {"mse": mse, "afer": afer}
     mse_percentage = mse * 100
     afer_percentage = "{:.2f}".format(afer) * 100
+    mape = mean_absolute_percentage_error(actual, forecasted)
 
     # Mengembalikan response JSON
     response_data = {
@@ -95,6 +96,7 @@ def predict():
         "evaluation_metrics": {
             "mse": mse,
             "afer": afer_percentage,
+            "mape": mape
         },
     }
 
